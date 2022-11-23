@@ -1,11 +1,10 @@
 package com.sob3r.chattilo
 
 import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.webkit.WebView
 import android.widget.Button
+import com.sob3r.chattilo.auth.AuthActivity
 
 class MainActivity : AppCompatActivity() {
 

@@ -1,13 +1,12 @@
-package com.sob3r.chattilo
+package com.sob3r.chattilo.auth
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.webkit.WebView
-import android.webkit.WebViewClient
 import androidx.annotation.RequiresApi
+import com.sob3r.chattilo.R
 
 class AuthActivity : AppCompatActivity() {
     @SuppressLint("SetJavaScriptEnabled")
@@ -27,24 +26,4 @@ class AuthActivity : AppCompatActivity() {
         webView.settings.javaScriptEnabled = true
         webView.loadUrl(authURL)
     }
-}
-
-class MyWebClient(activity: Activity) : WebViewClient() {
-    lateinit var accessToken: String
-    private val act = activity
-
-    override fun doUpdateVisitedHistory(view: WebView?, url: String?, isReload: Boolean) {
-        if (url!!.contains("#access_token=")){
-            accessToken = getAccessToken(url)
-            println("$accessToken")
-            act.finish()
-        }
-        super.doUpdateVisitedHistory(view, url, isReload)
-    }
-
-    // Если вдруг изменится authURL то обязательно изменить функцию
-    private fun getAccessToken(url: String): String {
-        return url.substring(32, 62)
-    }
-
 }
