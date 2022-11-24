@@ -16,8 +16,8 @@ class MessageParser (
     private val selectedChannel = this.channel
 
     private val token = "oauth:$accessToken"
-    private var sendChannel: ByteWriteChannel? = null
-    private var receiveChannel: ByteReadChannel? = null
+    private lateinit var sendChannel: ByteWriteChannel
+    private lateinit var receiveChannel: ByteReadChannel
 
     fun startParse() {
         runBlocking {
@@ -34,7 +34,7 @@ class MessageParser (
                     joinToChannel(selectedChannel)
 
                     while (true) {
-                        val serverMsg = receiveChannel!!.readUTF8Line()
+                        val serverMsg = receiveChannel.readUTF8Line()
                         if (serverMsg!!.contains("PING")){
                             sendMsg("PONG")
                         } else {
