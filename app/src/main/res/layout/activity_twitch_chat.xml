@@ -8,31 +8,40 @@
     tools:context=".twitch_chat.TwitchChat">
 
     <Button
-        android:id="@+id/startParsingBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/primary"
-        android:text="Start parsing"
+        android:id="@+id/closeConnectBtn"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#CE0101"
         android:textAllCaps="false"
-        android:textSize="32sp"
-        app:layout_constraintBottom_toTopOf="@+id/closeConnectBtn"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="300dp"
+        android:layout_height="55dp"
+        android:backgroundTint="@color/primary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/closeConnectBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/primary"
-        android:text="Close connect"
-        android:textAllCaps="false"
-        android:textSize="24sp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:background="@drawable/button_round_shape"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/editText" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/twitchMessageRV"
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/startParsingBtn"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintTop_toBottomOf="@+id/closeConnectBtn"
+        app:stackFromEnd="true" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

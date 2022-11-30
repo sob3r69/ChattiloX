@@ -1,17 +1,20 @@
 package com.sob3r.chattilo.twitch_api
 
+import androidx.recyclerview.widget.RecyclerView
+import com.sob3r.chattilo.twitch_chat.TwitchAdapter
+import com.sob3r.chattilo.twitch_chat.TwitchChat
+import com.sob3r.chattilo.twitch_chat.TwitchMessageData
 import io.ktor.network.selector.*
 import io.ktor.network.sockets.*
 import io.ktor.utils.io.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
 class MessageParser(
     private val userNickname: String,
     private val channel: String,
-    private val accessToken: String
+    private val accessToken: String,
+    private val adapter: TwitchAdapter,
+    private val rv: RecyclerView
     ) {
 
     private val serverAddress = "irc.chat.twitch.tv"
@@ -24,6 +27,8 @@ class MessageParser(
     private lateinit var sendChannel: ByteWriteChannel
     private lateinit var receiveChannel: ByteReadChannel
     private lateinit var serverSocket: Socket
+    private val tAdapter = this.adapter
+    private var message = TwitchMessageData("", "")
 
     suspend fun startParse() = coroutineScope {
         val selectorManager = SelectorManager(Dispatchers.IO)
@@ -43,9 +48,12 @@ class MessageParser(
 
                     if (serverMsg!!.contains("PING")) {
                         sendMsg("PONG")
-                    } else {
-                        println(">> $serverMsg")
+
+                    } else if (serverMsg.contains("PRIVMSG")) {
+                        addUserMsg(getViewerNick(serverMsg), getViewerMsg(serverMsg))
                     }
+
+                    delay(200)
 
                 }
             } catch (e: Throwable) {
@@ -56,25 +64,44 @@ class MessageParser(
         }
     }
 
-    suspend fun closeConnect(){
-        withContext(Dispatchers.IO){
-            serverSocket.close()
+    private suspend fun addUserMsg(nick: String, msg: String){
+        withContext(Dispatchers.Main){
+            rv.scrollToPosition(tAdapter.itemCount - 1)
+            tAdapter.addMessage(TwitchMessageData(nick, msg))
         }
     }
 
-    private fun cutViewerNick(srcMessage: String): String {
+    private fun getViewerNick(srcMessage: String): String {
+        var isMessage = false
+        var viewerNickname = ""
 
-        val endIndex = srcMessage.indexOf('!')
+        if (srcMessage.contains("PRIVMSG")){
+            isMessage = true
+        }
+        if (isMessage){
+            val endIndex = srcMessage.indexOf('!')
 
-        return srcMessage.substring(1, endIndex)
+            viewerNickname = srcMessage.substring(1, endIndex)
+        }
+
+        return "$viewerNickname:"
+
     }
 
-    private fun checkMessage(srcMessage: String): Boolean{
-        var accept = false
-        if (srcMessage.contains("JOIN $channel")){
-            accept = true
+    private fun getViewerMsg(srcMessage: String): String{
+        var isMessage = false
+        var viewerMsg = ""
+
+        if (srcMessage.contains("PRIVMSG")){
+            isMessage = true
         }
-        return accept
+        if (isMessage){
+            val startIndex = srcMessage.indexOf(string = " :")
+
+            viewerMsg = srcMessage.substring(startIndex + 2)
+        }
+
+        return viewerMsg
     }
 
     private suspend fun loginToServer(pass: String, nick: String){
