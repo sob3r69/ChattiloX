@@ -27,6 +27,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
+        android:id="@+id/sendMessageBTN"
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:background="@drawable/button_round_shape"
@@ -37,7 +38,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/twitchMessageRV"
         android:layout_width="match_parent"
-        android:layout_height="600dp"
+        android:layout_height="620dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

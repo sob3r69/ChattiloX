@@ -28,7 +28,6 @@ class MessageParser(
     private lateinit var receiveChannel: ByteReadChannel
     private lateinit var serverSocket: Socket
     private val tAdapter = this.adapter
-    private var message = TwitchMessageData("", "")
 
     suspend fun startParse() = coroutineScope {
         val selectorManager = SelectorManager(Dispatchers.IO)
@@ -62,6 +61,10 @@ class MessageParser(
                 }
             }
         }
+    }
+
+    suspend fun sendHelloMsg() = withContext(Dispatchers.IO){
+        sendMsg("PRIVMSG $channel :Hello <3")
     }
 
     private suspend fun addUserMsg(nick: String, msg: String){

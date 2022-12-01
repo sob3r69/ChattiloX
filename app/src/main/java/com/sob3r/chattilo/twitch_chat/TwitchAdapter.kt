@@ -37,6 +37,5 @@ class TwitchAdapter: RecyclerView.Adapter<TwitchAdapter.MessageHolder>(){
     fun addMessage(message: TwitchMessageData){
         messageList.add(message)
         notifyDataSetChanged()
-        println("<< Message added")
     }
 }

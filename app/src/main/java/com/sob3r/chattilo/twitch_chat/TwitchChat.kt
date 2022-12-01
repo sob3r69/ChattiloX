@@ -8,12 +8,17 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.sob3r.chattilo.R
 import com.sob3r.chattilo.twitch_api.MessageParser
+import com.sob3r.chattilo.twitch_api.MessageSender
 import com.sob3r.chattilo.userdata.UserDataDB
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
 class TwitchChat : AppCompatActivity() {
+
+    companion object {
+        const val channelName: String = ""
+    }
 
     private val userDatabase by lazy { UserDataDB.getDatabase(this).userDataDao() }
 
@@ -26,16 +31,27 @@ class TwitchChat : AppCompatActivity() {
         twitchChat.adapter = twitchAdapter
 
         val closeParsingBtn: Button = findViewById(R.id.closeConnectBtn)
+        val sendMessageBtn: Button = findViewById(R.id.sendMessageBTN)
 
-        startParse(twitchAdapter, twitchChat)
+        val channelName = intent.getStringExtra(channelName)
+
+        startParse(channelName!!, twitchAdapter, twitchChat)
+
+        sendMessageBtn.setOnClickListener {
+//            sendMsg(channelName)
+        }
 
         closeParsingBtn.setOnClickListener {
             stopParse(this)
         }
     }
 
-    private fun startParse(adapter: TwitchAdapter, rv: RecyclerView) = lifecycleScope.launch(Dispatchers.IO) {
-        MessageParser("user", "#xqc", getToken(), adapter, rv).startParse()
+    private fun sendMsg(channel: String) = lifecycleScope.launch(Dispatchers.IO){
+        MessageSender(channelName, getToken()).sendMessage()
+    }
+
+    private fun startParse(channel: String, adapter: TwitchAdapter, rv: RecyclerView) = lifecycleScope.launch(Dispatchers.IO) {
+        MessageParser("user", channel, getToken(), adapter, rv).startParse()
     }
 
 

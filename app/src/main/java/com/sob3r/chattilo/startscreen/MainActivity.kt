@@ -28,9 +28,10 @@ class MainActivity : AppCompatActivity() {
 
 
         openTwitchChat.setOnClickListener{
-            val twitchChatActivity = Intent(this, TwitchChat::class.java)
-            startActivity(twitchChatActivity)
+            DialogManager(this).searchChannelDialog()
+//            val twitchChatActivity = Intent(this, TwitchChat::class.java)
+//            twitchChatActivity.putExtra(TwitchChat.channelName, "#sob3r__")
+//            startActivity(twitchChatActivity)
         }
-
     }
 }
