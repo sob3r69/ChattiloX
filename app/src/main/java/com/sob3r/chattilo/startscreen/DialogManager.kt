@@ -1,6 +1,5 @@
 package com.sob3r.chattilo.startscreen
 
-import android.app.Activity
 import android.content.Intent
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
@@ -14,7 +13,7 @@ class DialogManager(val context: AppCompatActivity) {
         val builder = AlertDialog.Builder(context)
 
         builder.setTitle("Channel")
-        builder.setMessage("Alert dialog msg")
+        builder.setMessage("Type in channel name")
         builder.setView(channelField)
 
         builder.setPositiveButton("OK"){_, _ ->

@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.widget.Button
 import com.sob3r.chattilo.R
 import com.sob3r.chattilo.auth.AuthActivity
-import com.sob3r.chattilo.twitch_chat.TwitchChat
 import com.sob3r.chattilo.userdata.UserDataDB
 
 class MainActivity : AppCompatActivity() {
@@ -29,9 +28,6 @@ class MainActivity : AppCompatActivity() {
 
         openTwitchChat.setOnClickListener{
             DialogManager(this).searchChannelDialog()
-//            val twitchChatActivity = Intent(this, TwitchChat::class.java)
-//            twitchChatActivity.putExtra(TwitchChat.channelName, "#sob3r__")
-//            startActivity(twitchChatActivity)
         }
     }
 }

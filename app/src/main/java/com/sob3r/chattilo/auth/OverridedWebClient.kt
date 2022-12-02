@@ -1,12 +1,13 @@
 package com.sob3r.chattilo.auth
 
-import android.app.Activity
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.appcompat.app.AppCompatActivity
+import com.sob3r.chattilo.userdata.UserData
 import com.sob3r.chattilo.userdata.UserDataDB
 import kotlinx.coroutines.runBlocking
 
-class OverridedWebClient(activity: Activity) : WebViewClient() {
+class OverridedWebClient(activity: AppCompatActivity) : WebViewClient() {
     var accessToken: String? = null
     private val act = activity
 
@@ -20,13 +21,12 @@ class OverridedWebClient(activity: Activity) : WebViewClient() {
         }
         super.doUpdateVisitedHistory(view, url, isReload)
     }
-    // Если вдруг изменится authURL то обязательно изменить функцию
+
     private fun getAccessToken(url: String): String {
         return url.substring(32, 62)
     }
 
     private fun addTokenToDb(token: String) = runBlocking {
-        userDatabase.updateToken(token)
+        userDatabase.insertAll(UserData(1, "user", token))
     }
-
 }

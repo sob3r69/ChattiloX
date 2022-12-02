@@ -2,14 +2,13 @@ package com.sob3r.chattilo.twitch_api
 
 import androidx.recyclerview.widget.RecyclerView
 import com.sob3r.chattilo.twitch_chat.TwitchAdapter
-import com.sob3r.chattilo.twitch_chat.TwitchChat
 import com.sob3r.chattilo.twitch_chat.TwitchMessageData
 import io.ktor.network.selector.*
 import io.ktor.network.sockets.*
 import io.ktor.utils.io.*
 import kotlinx.coroutines.*
 
-class MessageParser(
+class TwitchClient(
     private val userNickname: String,
     private val channel: String,
     private val accessToken: String,
@@ -29,7 +28,7 @@ class MessageParser(
     private lateinit var serverSocket: Socket
     private val tAdapter = this.adapter
 
-    suspend fun startParse() = coroutineScope {
+    suspend fun clientConnect() = coroutineScope {
         val selectorManager = SelectorManager(Dispatchers.IO)
 
         serverSocket = aSocket(selectorManager).tcp().connect(serverAddress, port)
@@ -45,7 +44,13 @@ class MessageParser(
                 while (true) {
                     val serverMsg = receiveChannel.readUTF8Line()
 
-                    if (serverMsg!!.contains("PING")) {
+                    getUserNick(serverMsg!!)
+
+                    if(globalBoolean){
+                        sendUserMsg(globalText)
+                    }
+
+                    if (serverMsg.contains("PING")) {
                         sendMsg("PONG")
 
                     } else if (serverMsg.contains("PRIVMSG")) {
@@ -63,8 +68,17 @@ class MessageParser(
         }
     }
 
-    suspend fun sendHelloMsg() = withContext(Dispatchers.IO){
-        sendMsg("PRIVMSG $channel :Hello <3")
+    private fun getUserNick(msg: String){
+        if (msg.contains("JOIN")){
+            val id1 = msg.indexOf(":")
+            val id2 = msg.indexOf("!")
+            globalNick = msg.substring(id1 + 1, id2)
+        }
+    }
+
+    private suspend fun sendUserMsg(msg: String) = withContext(Dispatchers.IO){
+        sendMsg("PRIVMSG $channel :$msg")
+        globalBoolean = false
     }
 
     private suspend fun addUserMsg(nick: String, msg: String){
