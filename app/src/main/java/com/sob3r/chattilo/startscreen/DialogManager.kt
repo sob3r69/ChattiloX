@@ -21,7 +21,6 @@ class DialogManager(val context: AppCompatActivity) {
             twitchChatActivity.putExtra(TwitchChat.channelName, "#${channelField.text}")
             startActivity(context, twitchChatActivity, null)
         }
-
         val dialog = builder.create()
         dialog.show()
     }

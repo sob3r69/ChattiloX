@@ -5,14 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bgColor"
+    android:orientation="vertical"
     tools:context=".twitch_chat.TwitchChat">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/twitchMessageRV"
+        android:layout_width="match_parent"
+        android:layout_height="640dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:stackFromEnd="true"
+        app:layout_constraintBottom_toTopOf="@+id/editText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        app:layout_constrainedHeight="true"
+        android:background="@color/black"
         android:paddingTop="6dp"
         android:text="Text Example"
+        android:gravity="center"
         android:textColor="@color/primary"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,8 +37,6 @@
         android:id="@+id/editText"
         android:layout_width="300dp"
         android:layout_height="55dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginBottom="5dp"
         android:backgroundTint="@color/primary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -33,22 +45,9 @@
         android:id="@+id/sendMessageBTN"
         android:layout_width="55dp"
         android:layout_height="55dp"
-        android:layout_marginBottom="5dp"
         android:background="@drawable/button_round_shape"
         android:src="@drawable/send"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/editText" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/twitchMessageRV"
-        android:layout_width="match_parent"
-        android:layout_height="620dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:stackFromEnd="true" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

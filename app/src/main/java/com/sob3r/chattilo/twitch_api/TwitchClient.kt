@@ -83,8 +83,12 @@ class TwitchClient(
 
     private suspend fun addUserMsg(nick: String, msg: String){
         withContext(Dispatchers.Main){
-            rv.scrollToPosition(tAdapter.itemCount - 1)
             tAdapter.addMessage(TwitchMessageData(nick, msg))
+            if (rv.scrollState != 0){
+                rv.scrollToPosition(tAdapter.itemCount)
+            } else {
+                rv.scrollToPosition(tAdapter.itemCount - 1)
+            }
         }
     }
 

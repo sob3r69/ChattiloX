@@ -47,14 +47,14 @@ class TwitchChat : AppCompatActivity() {
 
         sendMessageBtn.setOnClickListener {
             globalText = editText.text.toString()
-            closeKeyboard()
             sendMsg()
-            twitchAdapter.addMessage(TwitchMessageData(globalNick, globalText))
+            twitchAdapter.addMessage(TwitchMessageData("$globalNick:", globalText))
         }
     }
 
     private fun sendMsg() = lifecycleScope.launch(Dispatchers.IO){
         globalBoolean = true
+        closeKeyboard()
     }
 
     private fun startParse(channel: String, adapter: TwitchAdapter, rv: RecyclerView) = lifecycleScope.launch(Dispatchers.IO) {
